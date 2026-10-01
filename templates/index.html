@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Upload Dataset</h2>
+  <form method="post" action="{{ url_for('load') }}" enctype="multipart/form-data">
+    <label>Drivers CSV <input type="file" name="drivers" accept=".csv"></label>
+    <label>Trips CSV <input type="file" name="trips" accept=".csv"></label>
+    <label>Activity CSV (optional) <input type="file" name="activity" accept=".csv"></label>
+    <button type="submit">LOAD DATA</button>
+  </form>
+  <form method="post" action="{{ url_for('load') }}">
+    <input type="hidden" name="use_sample" value="1">
+    <button type="submit" class="secondary">Use Sample Data</button>
+  </form>
+</section>
+
+{% if state.loaded %}
+<section class="card">
+  <h2>Data Validation</h2>
+  <p>Drivers dataset loaded ({{ state.store.drivers|length }} records)</p>
+  <p>Trips dataset loaded ({{ state.store.trips|length }} records)</p>
+  <p>Activity dataset loaded ({{ state.store.activities|length }} records)</p>
+  {% set summary = state.report.summary() %}
+  {% if summary %}
+  <ul class="issues">
+    {% for s in summary %}
+    <li><b>{{ s.count }}</b> {{ s.dataset }} record(s): {{ s.issue }}</li>
+    {% endfor %}
+  </ul>
+  <a class="btn" href="{{ url_for('validation') }}">View Validation Details</a>
+  {% else %}<p class="ok">No validation issues found.</p>{% endif %}
+  <p><a class="btn" href="{{ url_for('dashboard') }}">Go to Dashboard →</a></p>
+</section>
+{% endif %}
+{% endblock %}

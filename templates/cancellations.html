@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Cancellation Analysis</h2>
+  <p><b>Total Cancellations: {{ total }}</b></p>
+  {{ m.table(['Category', 'Count'], reasons) }}
+</section>
+<section class="card">
+  <h3>Breakdown</h3>
+  <p>{% for key, label in views.items() %}<a class="btn {{ 'active' if key == view }}" href="{{ url_for('cancellations', view=key) }}">Cancellation by {{ label }}</a> {% endfor %}</p>
+  {{ m.table([views[view], 'Cancellations', 'Share %'], rows) }}
+</section>
+{% endblock %}

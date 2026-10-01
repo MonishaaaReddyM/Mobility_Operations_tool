@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Validation Details</h2>
+  <p>Filter:
+    <a href="{{ url_for('validation') }}">All</a> |
+    {% for d in ['drivers', 'trips', 'activity'] %}<a href="{{ url_for('validation', dataset=d) }}">{{ d }}</a> {% endfor %}
+  </p>
+  {% set rows = [] %}{% for i in issues %}{% set _ = rows.append([i.dataset, i.record_id, i.issue]) %}{% endfor %}
+  {{ m.table(['Dataset', 'Record', 'Issue'], rows) }}
+</section>
+{% endblock %}

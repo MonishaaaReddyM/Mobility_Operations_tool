@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h2>Dashboard</h2>
+  <div class="kpis">
+    {% for k, v in kpis.items() %}
+    <div class="kpi"><span>{{ k }}</span><b>{% if k in ['Total Revenue', 'Average Fare'] %}{{ v|inr }}{% else %}{{ "{:,}".format(v) if v is integer else v }}{% endif %}</b></div>
+    {% endfor %}
+  </div>
+</section>
+<section class="card">
+  <h2>Operational Insights</h2>
+  <ol>{% for i in insights %}<li>{{ i }}</li>{% endfor %}</ol>
+</section>
+{% endblock %}

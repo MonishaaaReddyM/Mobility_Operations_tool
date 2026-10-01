@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Anomaly Detection</h2>
+  <p><b>{{ trips|length + drivers|length }} anomalies detected</b> ({{ flagged }} trips flagged, {{ drivers|length }} driver flags)</p>
+  <h3>Trip Anomalies</h3>
+  {% set t = [] %}{% for a in trips %}{% set _ = t.append([a.id, a.issue]) %}{% endfor %}
+  {{ m.table(['Trip ID', 'Issue'], t) }}
+  <h3>Driver Anomalies</h3>
+  {% set d = [] %}{% for a in drivers %}{% set _ = d.append([a.id, a.issue]) %}{% endfor %}
+  {{ m.table(['Driver ID', 'Issue'], d) }}
+</section>
+{% endblock %}

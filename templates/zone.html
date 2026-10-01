@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Zone Analytics</h2>
+  <form method="get">
+    <label>Zone <select name="zone">
+      {% for z in zones %}<option value="{{ z.zone_id }}" {{ 'selected' if zone and z.zone_id == zone.zone_id }}>{{ z.zone_id }} – {{ z.name }} ({{ z.city }})</option>{% endfor %}
+    </select></label>
+    <button>Analyze</button>
+  </form>
+  {% if stats %}
+  <h3>{{ zone.name }} ({{ zone.zone_id }})</h3>
+  {{ m.kv({'Total Requests': stats.requests, 'Completed Trips': stats.completed, 'Cancelled Trips': stats.cancelled,
+           'Completion Rate': stats.completion_rate ~ '%', 'Cancellation Rate': stats.cancellation_rate ~ '%',
+           'Revenue': stats.revenue|inr, 'Average Fare': stats.avg_fare|inr}) }}
+  <h3>Demand Distribution</h3>{{ m.bars(dist) }}
+  {% endif %}
+</section>
+<section class="card"><h2>Overall Demand by Time Slot</h2>{{ m.bars(overall) }}</section>
+{% endblock %}

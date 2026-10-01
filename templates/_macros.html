@@ -1,0 +1,24 @@
+{% macro table(headers, rows) %}
+<div class="scroll"><table>
+  <thead><tr>{% for h in headers %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+  <tbody>
+  {% for r in rows %}<tr>{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>
+  {% else %}<tr><td colspan="{{ headers|length }}" class="muted">No data.</td></tr>{% endfor %}
+  </tbody>
+</table></div>
+{% endmacro %}
+
+{% macro kv(d) %}
+<table class="kv">{% for k, v in d.items() %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}</table>
+{% endmacro %}
+
+{% macro bars(pairs) %}
+{% set m = pairs|map(attribute=1)|max if pairs else 0 %}
+<table>
+  <thead><tr><th>Time Slot</th><th>Requests</th><th></th></tr></thead>
+  {% for label, n in pairs %}
+  <tr><td>{{ label }}</td><td>{{ n }}</td>
+      <td class="barcell"><div class="bar" style="width: {{ (n * 100 / m) if m else 0 }}%"></div></td></tr>
+  {% endfor %}
+</table>
+{% endmacro %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Search</h2>
+  <form method="get">
+    <label>Search Type <select name="type">
+      {% for t in ['driver', 'trip', 'zone'] %}<option value="{{ t }}" {{ 'selected' if t == kind }}>{{ t|capitalize }}</option>{% endfor %}
+    </select></label>
+    <label>Search ID <input name="q" value="{{ q }}" placeholder="D102 / T1021 / Z04 / Koramangala"></label>
+    <button>SEARCH</button>
+  </form>
+  {% if result %}<h3>{{ title }} found</h3>{{ m.kv(result) }}
+  {% elif q %}<p class="muted">No {{ kind }} found for "{{ q }}".</p>{% endif %}
+</section>
+{% endblock %}

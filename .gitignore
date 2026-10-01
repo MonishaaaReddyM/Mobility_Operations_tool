@@ -1,0 +1,28 @@
+# Python bytecode / caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+*.env
+
+# Editor and OS files
+.vscode/*
+!.vscode/launch.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Uploaded or generated data (keep the bundled sample set)
+data/*
+!data/sample/

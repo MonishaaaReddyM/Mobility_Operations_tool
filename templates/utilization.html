@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m %}
+{% block content %}
+<section class="card">
+  <h2>Driver Utilization</h2>
+  <form method="get">
+    <label>High ≥ <input type="number" step="1" name="high" value="{{ high }}">%</label>
+    <label>Low &lt; <input type="number" step="1" name="low" value="{{ low }}">%</label>
+    <input type="hidden" name="idle" value="{{ idle_thr }}">
+    <button>Apply thresholds</button>
+  </form>
+  {% set out = [] %}
+  {% for r in rows %}{% set _ = out.append([r.driver_id ~ ' – ' ~ r.name, r.online, r.busy, r.idle, r.utilization ~ '%', r.level]) %}{% endfor %}
+  {{ m.table(['Driver', 'Online Hrs', 'Busy Hrs', 'Idle Hrs', 'Utilization', 'Class'], out) }}
+</section>
+<section class="card">
+  <h2>Idle-Time / Consecutive Trip Analysis</h2>
+  <form method="get">
+    <input type="hidden" name="high" value="{{ high }}"><input type="hidden" name="low" value="{{ low }}">
+    <label>Idle Threshold <input type="number" name="idle" value="{{ idle_thr|int }}" min="0"> minutes</label>
+    <button name="run_idle" value="1">Analyze</button>
+  </form>
+  {% if idle_rows is not none %}
+  <p>{{ idle_rows|length }} gaps ≥ {{ idle_thr|int }} min (showing top 200)</p>
+  {% set out2 = [] %}
+  {% for r in idle_rows[:200] %}{% set _ = out2.append([r.driver_id, r.prev, r.next, r.idle ~ ' min']) %}{% endfor %}
+  {{ m.table(['Driver', 'Previous Trip', 'Next Trip', 'Idle Time'], out2) }}
+  {% endif %}
+</section>
+{% endblock %}
